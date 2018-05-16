@@ -17,6 +17,10 @@ public class GameController : MonoBehaviour {
 	private BallController ballControllerSc;
 	private ScoreTracker scoreTrackerSc;
 
+	void Awake() {
+		Application.targetFrameRate = 60;
+	}
+
 	void Start() {
 		scoreTrackerSc = scoreTracker.GetComponent<ScoreTracker>();
 		ballControllerSc = ball.GetComponent<BallController>();

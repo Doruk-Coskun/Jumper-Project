@@ -208,7 +208,7 @@ MonoBehaviour:
   gameController: {fileID: 122964471}
   verticalSpeed: 0
   initialVerticalSpeed: 3.5
-  horizontalSpeed: 2
+  horizontalSpeed: 3
   maxSpeed: 6
   jumpForce: 500
 --- !u!54 &103152584

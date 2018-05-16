@@ -16,7 +16,7 @@ public class BallController : MonoBehaviour {
 	private GameController gameControllerSc;
 	private bool canJump = true;
 
-	private Vector2 touchOrigin = -Vector2.one;
+	private Vector2 touchOriginalPosition = -Vector2.one;
 
 	void Start() {
 		gameControllerSc = gameController.GetComponent<GameController>();
@@ -24,15 +24,8 @@ public class BallController : MonoBehaviour {
 	}
 
 	void Update() {
-		if (Input.GetKeyDown("space") && canJump) {
-			rigidb.AddForce(new Vector3 (0, jumpForce, 0));
-		}
-	}
-		
-	void FixedUpdate() {
 
 		float horizontalMovement = 0;
-		float verticalMovement = 0;
 
 		transform.position += Vector3.forward * verticalSpeed * Time.deltaTime;
 
@@ -45,41 +38,45 @@ public class BallController : MonoBehaviour {
 
 		horizontalMovement = Input.GetAxisRaw("Horizontal");
 
-		#endif
-		//Check if the game is running on iOS or IPhone.
-		#if UNITY_IOS || UNITY_IPHONE
-
-		if (Input.touchCount > 0) {
-			//Store the first touch detected.
-			Touch myTouch = Input.touches[0];
-
-		//Check if the phase of that touch equals Began
-		if (myTouch.phase == TouchPhase.Began) {
-			//If so, set touchOrigin to the position of that touch
-			touchOrigin = myTouch.position;
+		if (Input.GetKeyDown("space") && canJump) {
+			rigidb.AddForce(new Vector3 (0, jumpForce, 0));
 		}
 
-		//If the touch phase is not Began, and instead is equal to Ended and the x of touchOrigin is greater or equal to zero:
-		else if (myTouch.phase == TouchPhase.Ended && touchOrigin.x >= 0) {
-			//Set touchEnd to equal the position of this touch
-			Vector2 touchEnd = myTouch.position;
+		//Check if the game is running on iOS or IPhone.
+		#endif
 
-			//Calculate the difference between the beginning and end of the touch on the x axis.
-			float x = touchEnd.x - touchOrigin.x;
+		#if UNITY_IOS || UNITY_IPHONE
 
-			//Calculate the difference between the beginning and end of the touch on the y axis.
-			float y = touchEnd.y - touchOrigin.y;
+		int touchCount = Input.touchCount;
 
-			//Set touchOrigin.x to -1 so that our else if statement will evaluate false and not repeat immediately.
-			touchOrigin.x = -1;
+		if (touchCount > 0) {
+			for (int i = 0; i < touchCount; i++) {
+				//Store the first touch detected.
+				Touch myTouch = Input.touches[i];
+				Vector2 touchEndPosition;
 
-			//Check if the difference along the x axis is greater than the difference along the y axis.
-			if (Mathf.Abs(x) > Mathf.Abs(y))
-				//If x is greater than zero, set horizontal to 1, otherwise set it to -1
-				horizontalMovement = x > 0 ? 1 : -1;
-			else
-				//If y is greater than zero, set horizontal to 1, otherwise set it to -1
-				verticalMovement = y > 0 ? 1 : -1;
+				TouchPhase touchPhase = myTouch.phase;
+
+				switch(touchPhase) {
+				case TouchPhase.Stationary:
+				case TouchPhase.Began:
+					touchOriginalPosition = myTouch.position;
+					Debug.Log("touchOriginalPosition: " + touchOriginalPosition);
+					horizontalMovement = touchOriginalPosition.x  > Screen.width/2? 1: -1;
+					break;
+				case TouchPhase.Ended:
+					touchEndPosition = myTouch.position;
+					Debug.Log("touchEndPosition: " + touchOriginalPosition);
+					float x = touchEndPosition.x - touchOriginalPosition.x;
+					float y = touchEndPosition.y - touchOriginalPosition.y;
+					if (Mathf.Abs(y) > Mathf.Abs(x) && canJump) {
+						rigidb.AddForce(new Vector3 (0, jumpForce, 0));
+						Debug.Log("Jumped");
+					}
+					break;
+				case TouchPhase.Canceled:
+					break;
+				}
 			}
 		}
 

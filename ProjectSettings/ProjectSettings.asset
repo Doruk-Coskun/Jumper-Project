@@ -7,7 +7,7 @@ PlayerSettings:
   productGUID: b0bee7cb7dedf4d1bb6912f91a5d2c1e
   AndroidProfiler: 0
   defaultScreenOrientation: 0
-  targetDevice: 2
+  targetDevice: 0
   useOnDemandResources: 0
   accelerometerFrequency: 60
   companyName: DefaultCompany
@@ -145,6 +145,7 @@ PlayerSettings:
   targetPixelDensity: 0
   resolutionScalingMode: 0
   applicationIdentifier:
+    Standalone: com.DorukCoskun.JumperTest
     iOS: com.Company.JumperTest
   buildNumber: {}
   AndroidBundleVersionCode: 1

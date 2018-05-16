@@ -69,14 +69,14 @@ public class PlatformSpawner : MonoBehaviour {
 		newPlatform.transform.parent = transform;
 		platformCount++;
 		totalPlatformCount++;
+
+		//Rotate platformLocation so that it would be ready for the next platform.
+		platformLocation.transform.position += new Vector3(Random.Range(-4, 6), 
+			0, Random.Range(platformDistance + 2, platformDistance + 3));
 	}
 
 	void CreatePlatforms() {
 		while (platformCount < platformMaxCount) {
-			//Rotate platformLocation so that it would be ready for the next platform.
-			platformLocation.transform.position += new Vector3(Random.Range(-5, 5), 
-				0, Random.Range(platformDistance, platformDistance + 2));
-			
 			newPlatform = Instantiate(platforms[Random.Range(2, 6)], platformLocation.transform);
 			newPlatform.transform.parent = transform;
 			platformCount++;
@@ -89,6 +89,10 @@ public class PlatformSpawner : MonoBehaviour {
 				newCollectible = Instantiate(collectible, collectibleLocation);
 				newCollectible.transform.parent = transform;
 			}
+
+			//Rotate platformLocation so that it would be ready for the next platform.
+			platformLocation.transform.position += new Vector3(Random.Range(-4, 6), 
+				0, Random.Range(platformDistance, platformDistance + 2));
 		}
 	}
 }
