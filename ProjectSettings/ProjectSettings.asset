@@ -146,7 +146,7 @@ PlayerSettings:
   resolutionScalingMode: 0
   applicationIdentifier:
     Standalone: com.DorukCoskun.JumperTest
-    iOS: com.Company.JumperTest
+    iOS: com.Company.Jumper
   buildNumber: {}
   AndroidBundleVersionCode: 1
   AndroidMinSdkVersion: 16

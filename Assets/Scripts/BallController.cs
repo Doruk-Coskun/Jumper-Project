@@ -58,20 +58,22 @@ public class BallController : MonoBehaviour {
 				TouchPhase touchPhase = myTouch.phase;
 
 				switch(touchPhase) {
+
+				//Horizontal Movement Controls.
 				case TouchPhase.Stationary:
 				case TouchPhase.Began:
 					touchOriginalPosition = myTouch.position;
-					Debug.Log("touchOriginalPosition: " + touchOriginalPosition);
 					horizontalMovement = touchOriginalPosition.x  > Screen.width/2? 1: -1;
 					break;
+				//Vertival Movement Control.
 				case TouchPhase.Ended:
 					touchEndPosition = myTouch.position;
-					Debug.Log("touchEndPosition: " + touchOriginalPosition);
 					float x = touchEndPosition.x - touchOriginalPosition.x;
 					float y = touchEndPosition.y - touchOriginalPosition.y;
+
+					//Check if the player makes an upward swipe.
 					if (Mathf.Abs(y) > Mathf.Abs(x) && canJump) {
 						rigidb.AddForce(new Vector3 (0, jumpForce, 0));
-						Debug.Log("Jumped");
 					}
 					break;
 				case TouchPhase.Canceled:
@@ -99,17 +101,20 @@ public class BallController : MonoBehaviour {
 		transform.position = Vector3.zero;
 		verticalSpeed = initialVerticalSpeed;
 	}
-
-	//BUG: When the corner of the platform hit, multiple points are awarded.
+		
 	void OnCollisionEnter(Collision other) {
 		if (other.gameObject.tag == "Platform") {
 			gameControllerSc.AddPoints();
 			gameControllerSc.PlatformDestroyed();
 			Destroy(other.gameObject, 4.0f);
 		}
+
+		if (other.gameObject.tag == "Platform(Start)") {
+			gameControllerSc.PlatformDestroyed();
+			Destroy(other.gameObject, 4.0f);
+		}
 	}
 
-	// Is this necessary? Maybe use OnCollisionEnter
 	void OnCollisionStay(Collision other) {
 		if (other.gameObject.tag == "Platform" 
 			|| other.gameObject.tag == "Platform(Start)") {

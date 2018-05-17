@@ -9,13 +9,18 @@ public class PlatformSpawner : MonoBehaviour {
 	public GameObject platformLocation;
 	public GameObject gameController;
 
-	public int platformMaxCount;
-	private float initialPlatformDistance = 8;
+	//Maximum amount of platforms allowed in the scene.
+	public int platformMaxCount = 15;
 
+	//Current number of platforms in the scene.
 	private int platformCount = 0;
 	private int currentPlatformIndex = 0;
+
+	//Overall total amount of platforms spawned.
 	private int totalPlatformCount = 0;
 	private float platformDistance;
+	private float initialPlatformDistance = 10.5f;
+
 	private GameObject newPlatform;
 	private GameObject newCollectible;
 	private GameController gameControllerSc;
@@ -60,7 +65,7 @@ public class PlatformSpawner : MonoBehaviour {
 		currentPlatformIndex++;
 		if (currentPlatformIndex % 10 == 0) {
 			gameControllerSc.IncreaseSpeed();
-			platformDistance += 0.75f;
+			platformDistance += 1.75f;
 		}
 	}
 
